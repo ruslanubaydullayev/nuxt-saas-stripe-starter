@@ -47,12 +47,6 @@ const secondaryNavigation = [
     current: false
   },
   {
-    name: 'Billing',
-    href: '/dashboard/billing',
-    icon: 'i-heroicons-credit-card',
-    current: false
-  },
-  {
     name: 'Settings',
     href: '/dashboard/settings',
     icon: 'i-heroicons-cog',

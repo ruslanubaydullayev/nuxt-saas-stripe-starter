@@ -14,19 +14,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/main.css', '~/assets/scss/main.scss'],
   runtimeConfig: {
-    // The private keys which are only available within server-side
     AuthSecret: '',
     GoogleClientId: '',
     GoogleClientSecret: '',
-    StripeSecretKey: '',
-    StripeWebhookSecret: '',
     ResendApiKey: '',
     public: {
       SiteUrl: '',
       maxRankingItems: Number(process.env.MAX_RANKING_ITEMS || 10),
       maxUploadMb: Number(process.env.MAX_UPLOAD_MB || 100),
-      maxClipDurationSeconds: Number(process.env.MAX_CLIP_DURATION_SECONDS || 60),
-      planPriceUsd: Number(process.env.PLAN_PRICE_USD || 9)
+      maxClipDurationSeconds: Number(process.env.MAX_CLIP_DURATION_SECONDS || 60)
     }
   },
   routeRules: {

@@ -9,33 +9,10 @@ useSeoMeta({
 
 const store = useBuilderStore()
 const toast = useToast()
-const router = useRouter()
 const { status: authStatus } = useAuth()
 const isLoggedIn = computed(() => authStatus.value === 'authenticated')
 
-const { data: usage, refresh: refreshUsage } = await useFetch('/api/usage/status')
-
-const gate = computed(() => usage.value?.reason ?? 'ok')
-const guestLimitReached = computed(
-  () => gate.value === 'limit_reached' && !usage.value?.isAuthenticated
-)
-const paidUpsell = computed(
-  () =>
-    gate.value === 'limit_reached'
-    && usage.value?.isAuthenticated
-    && !usage.value?.isSubscribed
-)
-const subscribing = ref(false)
-
-async function upgrade() {
-  if (!isLoggedIn.value) return router.push('/login?callbackUrl=/create')
-  subscribing.value = true
-  try {
-    await navigateTo('/pricing')
-  } finally {
-    subscribing.value = false
-  }
-}
+const { data: usage } = await useFetch('/api/usage/status')
 
 const phase = ref<'idle' | 'processing' | 'done' | 'failed'>('idle')
 const renderError = ref<string | null>(null)
@@ -75,12 +52,9 @@ async function generate() {
     const e = err as { statusCode?: number, statusMessage?: string }
     phase.value = 'failed'
     renderError.value = e.statusMessage ?? 'Couldn’t start the render.'
-    if (e.statusCode === 403) {
-      await refreshUsage()
-      store.setStep(3)
-      phase.value = 'idle'
-      toast.add({ title: renderError.value, color: 'error' })
-    }
+    store.setStep(3)
+    phase.value = 'idle'
+    toast.add({ title: renderError.value, color: 'error' })
   }
 }
 
@@ -98,12 +72,10 @@ function startPolling(jobId: string) {
         )
         store.resultUrl = url
         phase.value = 'done'
-        refreshUsage()
       } else if (s.status === 'failed') {
         stopPolling()
         phase.value = 'failed'
         renderError.value = s.error ?? 'Render failed. You can try again.'
-        refreshUsage()
       }
     } catch {
       // transient — keep polling
@@ -115,7 +87,6 @@ function createAnother() {
   stopPolling()
   store.reset()
   phase.value = 'idle'
-  refreshUsage()
 }
 
 onBeforeUnmount(stopPolling)
@@ -128,48 +99,13 @@ onBeforeUnmount(stopPolling)
     </h1>
 
     <UAlert
-      v-if="gate === 'ok' && !usage?.isAuthenticated"
+      v-if="!usage?.isAuthenticated"
       color="primary"
       variant="subtle"
       class="mb-6"
-      title="Your first video is on us"
-      description="No sign-up needed. Sign in later to save it and make more."
+      title="Free to use"
+      description="No sign-up needed. Sign in to save your work to your account."
     />
-
-    <UAlert
-      v-else-if="guestLimitReached"
-      color="warning"
-      variant="subtle"
-      class="mb-6"
-      title="You've used your free video"
-      description="Sign in to save it to your account and create more ranking videos."
-    >
-      <template #actions>
-        <UButton
-          label="Sign in with Google"
-          to="/login?callbackUrl=/create"
-        />
-      </template>
-    </UAlert>
-
-    <UAlert
-      v-else-if="paidUpsell"
-      color="warning"
-      variant="subtle"
-      class="mb-6"
-      title="You've used your free video today"
-      :description="usage?.resetAt
-        ? `Upgrade to Pro for unlimited renders, or come back ${new Date(usage.resetAt).toLocaleString()}.`
-        : 'Upgrade to Pro for unlimited renders, or come back tomorrow.'"
-    >
-      <template #actions>
-        <UButton
-          :label="subscribing ? 'Starting…' : 'Upgrade to Pro'"
-          :loading="subscribing"
-          @click="upgrade"
-        />
-      </template>
-    </UAlert>
 
     <CreateCreateStepper
       :step="store.step"
@@ -276,7 +212,7 @@ onBeforeUnmount(stopPolling)
           <UButton
             label="Generate video"
             icon="i-lucide-sparkles"
-            :disabled="!store.canGenerate || gate !== 'ok'"
+            :disabled="!store.canGenerate"
             @click="generate"
           />
         </div>
@@ -361,9 +297,6 @@ onBeforeUnmount(stopPolling)
           </p>
           <p class="mt-2 text-sm text-muted">
             {{ renderError }}
-          </p>
-          <p class="mt-1 text-xs text-muted">
-            Failed renders don't count against your daily limit.
           </p>
           <div class="mt-6 flex justify-center gap-3">
             <UButton

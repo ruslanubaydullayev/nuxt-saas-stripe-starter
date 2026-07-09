@@ -5,8 +5,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     isAuthenticated: !!session?.user,
-    isSubscribed: !!session?.user?.stripeCustomerId,
-    reason: 'ok' as const,
-    resetAt: null
+    reason: 'ok' as const
   }
 })

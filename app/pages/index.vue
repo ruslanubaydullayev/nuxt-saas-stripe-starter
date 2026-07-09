@@ -1,7 +1,4 @@
 <script setup lang="ts">
-const config = useRuntimeConfig()
-const price = config.public.planPriceUsd
-
 useSeoMeta({
   title: 'Ranking Shorts — Turn Clips into Ranked Videos',
   description:
@@ -22,7 +19,7 @@ const faqs = [
   },
   {
     q: 'What does it cost?',
-    a: `You can make one video per day for free. Pro is $${price}/month for unlimited renders.`
+    a: 'Ranking Shorts is completely free. Create as many ranking videos as you want.'
   },
   {
     q: 'Where do the clips come from?',
@@ -65,8 +62,7 @@ const marquee = [...slides, ...slides]
     <UPageHero
       description="Drop in TikTok & Instagram clips, rank them, and export a polished 9:16 short with numbered badges and captions — no editing skills required."
       :links="[
-        { label: 'Start creating — free', to: '/create', icon: 'i-lucide-arrow-right', trailing: true, size: 'xl' },
-        { label: 'See pricing', to: '/pricing', color: 'neutral', variant: 'subtle', size: 'xl' }
+        { label: 'Start creating — free', to: '/create', icon: 'i-lucide-arrow-right', trailing: true, size: 'xl' }
       ]"
     >
       <template #title>
@@ -114,7 +110,7 @@ const marquee = [...slides, ...slides]
 
     <UPageCTA
       title="Make your first ranking short"
-      description="Free to start. Just clips, ranked and ready to post."
+      description="Free to use. Just clips, ranked and ready to post."
       :links="[
         { label: 'Start creating', to: '/create', trailingIcon: 'i-lucide-arrow-right' }
       ]"

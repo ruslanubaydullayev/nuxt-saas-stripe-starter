@@ -3,7 +3,6 @@ import { getServerSession } from '#auth'
 export default defineEventHandler(async (event) => {
   const unprotectedPaths = [
     '/api/auth',
-    '/api/webhooks',
     '/api/_content',
     '/api/_mdc',
     '/api/clips',
@@ -11,7 +10,6 @@ export default defineEventHandler(async (event) => {
     '/api/render'
   ]
 
-  // Check if the route is an API route and not in the list of unprotected paths
   const isProtectedRoute
     = event.path.startsWith('/api')
       && !unprotectedPaths.some(path => event.path.startsWith(path))

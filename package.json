@@ -43,7 +43,6 @@
     "resend": "6.3.0-canary.0",
     "sass": "^1.93.2",
     "sortablejs": "^1.15.7",
-    "stripe": "^19.1.0",
     "tailwindcss": "^4.1.14",
     "vue": "^3.5.0",
     "zod": "^4.1.11"

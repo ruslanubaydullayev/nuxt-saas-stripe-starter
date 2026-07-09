@@ -107,7 +107,7 @@
                       <div class="mt-2">
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">
                           <span class="font-bold">Warning: </span>This will permanently
-                          delete your account and your active subscription!
+                          delete your account and all associated data.
                         </p>
                       </div>
                       <USeparator class="my-4" />

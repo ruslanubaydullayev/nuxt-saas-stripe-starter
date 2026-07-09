@@ -23,22 +23,18 @@ export default NuxtAuthHandler({
   },
   callbacks: {
     async signIn({ user }) {
-      // Verify if the user is new by checking if they exist in the database
       if (user.email && user.name) {
         try {
           const existingUser = await prisma.user.findUnique({
             where: { email: user.email }
           })
 
-          // If no existing user, it's a new sign-up
           if (!existingUser) {
-            console.log('New user detected, sending welcome email to:', user.email)
             await sendWelcomeEmail({
               to: user.email,
               userName: user.name,
               userEmail: user.email
             })
-            console.log('Welcome email sent successfully')
           }
         } catch (error) {
           console.error('Error occurred while checking/sending email:', error)
@@ -54,7 +50,6 @@ export default NuxtAuthHandler({
         }
         session.user.name = token.name
         session.user.image = token.picture
-        session.user.stripeCustomerId = token.stripeCustomerId
 
         if (token.email) {
           session.user.email = token.email
@@ -74,7 +69,6 @@ export default NuxtAuthHandler({
       token.name = dbUser.name
       token.email = dbUser.email
       token.picture = dbUser.image
-      token.stripeCustomerId = dbUser.stripeCustomerId
       return token
     }
   }

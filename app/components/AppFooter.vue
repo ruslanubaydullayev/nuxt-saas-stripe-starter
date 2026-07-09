@@ -4,9 +4,6 @@ const columns = [{
   children: [{
     label: 'Create',
     to: '/create'
-  }, {
-    label: 'Pricing',
-    to: '/pricing'
   }]
 }]
 

@@ -27,15 +27,6 @@ onMounted(() => {
       description: 'You have successfully signed in.'
     })
   }
-  if (route.query.webhookCallback) {
-    router.replace({ query: {} })
-    toast.add({
-      title: 'Subscription',
-      color: 'green',
-      description:
-        'You have successfully subscribed to our plan. You will receive an email shortly.'
-    })
-  }
 })
 useHead({
   titleTemplate: (titleChunk) => {

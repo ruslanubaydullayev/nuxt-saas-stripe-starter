@@ -6,9 +6,6 @@ const { data: authData, signOut } = useAuth()
 const items = computed(() => [{
   label: 'Create',
   to: '/create'
-}, {
-  label: 'Pricing',
-  to: '/pricing'
 }])
 
 const dropdownMenuItems = [
