@@ -165,9 +165,9 @@ const passphrase = ref('')
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   // Do something with data
   isFormLoading.value = true
-  await $fetch('/api/update-profile', {
+  await useApiFetch('/api/update-profile', {
     method: 'POST',
-    body: JSON.stringify(event.data)
+    body: event.data
   })
   isFormLoading.value = false
   await getSession()
@@ -190,7 +190,7 @@ async function confirmDeleteAccount() {
     return
   }
   // Delete account
-  await $fetch('/api/delete-account', {
+  await useApiFetch('/api/delete-account', {
     method: 'DELETE'
   })
   signOut({

@@ -9,10 +9,28 @@ useSeoMeta({
 
 const store = useBuilderStore()
 const toast = useToast()
-const { status: authStatus } = useAuth()
+const route = useRoute()
+const router = useRouter()
+const { status: authStatus, getSession } = useAuth()
 const isLoggedIn = computed(() => authStatus.value === 'authenticated')
 
-const { data: usage } = await useFetch('/api/usage/status')
+const { data: usage, refresh: refreshUsage } = await useAsyncData(
+  'usage-status',
+  () => useApiFetch<{ isAuthenticated: boolean, reason: string }>('/api/usage/status')
+)
+
+onMounted(async () => {
+  if (route.query.signInCallback) {
+    await getSession()
+    await refreshUsage()
+    router.replace({ query: {} })
+    toast.add({
+      title: 'Welcome!',
+      color: 'primary',
+      description: 'You have successfully signed in.'
+    })
+  }
+})
 
 const phase = ref<'idle' | 'processing' | 'done' | 'failed'>('idle')
 const renderError = ref<string | null>(null)
@@ -42,7 +60,7 @@ async function generate() {
   renderError.value = null
 
   try {
-    const { jobId } = await $fetch<{ jobId: string }>('/api/render', {
+    const { jobId } = await useApiFetch<{ jobId: string }>('/api/render', {
       method: 'POST',
       body: payload
     })
@@ -62,12 +80,12 @@ function startPolling(jobId: string) {
   stopPolling()
   poll = setInterval(async () => {
     try {
-      const s = await $fetch<{ status: string, error: string | null }>(
+      const s = await useApiFetch<{ status: string, error: string | null }>(
         `/api/render/${jobId}/status`
       )
       if (s.status === 'done') {
         stopPolling()
-        const { url } = await $fetch<{ url: string }>(
+        const { url } = await useApiFetch<{ url: string }>(
           `/api/render/${jobId}/download`
         )
         store.resultUrl = url

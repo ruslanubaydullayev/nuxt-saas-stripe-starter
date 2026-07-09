@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
-const { data: authData, signOut } = useAuth()
+const { data: authData, status: authStatus, signOut } = useAuth()
+const isLoggedIn = computed(() => authStatus.value === 'authenticated')
 
 const items = computed(() => [{
   label: 'Create',
@@ -52,7 +53,7 @@ const dropdownMenuItems = [
       <UColorModeButton />
 
       <UButton
-        v-if="!authData"
+        v-if="!isLoggedIn"
         icon="i-lucide-log-in"
         color="neutral"
         variant="ghost"
@@ -61,7 +62,7 @@ const dropdownMenuItems = [
       />
 
       <UButton
-        v-if="!authData"
+        v-if="!isLoggedIn"
         label="Sign in"
         color="neutral"
         variant="outline"
@@ -93,7 +94,7 @@ const dropdownMenuItems = [
       <USeparator class="my-6" />
 
       <UButton
-        v-if="!authData"
+        v-if="!isLoggedIn"
         label="Sign in"
         color="neutral"
         variant="subtle"

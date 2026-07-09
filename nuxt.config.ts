@@ -7,22 +7,19 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/content',
-    '@sidebase/nuxt-auth',
     '@pinia/nuxt',
     '@vueuse/nuxt'
   ],
   devtools: { enabled: true },
   css: ['~/assets/main.css', '~/assets/scss/main.scss'],
   runtimeConfig: {
-    AuthSecret: '',
-    GoogleClientId: '',
-    GoogleClientSecret: '',
-    ResendApiKey: '',
     public: {
-      SiteUrl: '',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.ytshort.site',
       maxRankingItems: Number(process.env.MAX_RANKING_ITEMS || 10),
       maxUploadMb: Number(process.env.MAX_UPLOAD_MB || 100),
-      maxClipDurationSeconds: Number(process.env.MAX_CLIP_DURATION_SECONDS || 60)
+      maxClipDurationSeconds: Number(process.env.MAX_CLIP_DURATION_SECONDS || 60),
+      planPriceUsd: Number(process.env.PLAN_PRICE_USD || 9)
     }
   },
   routeRules: {
@@ -35,16 +32,8 @@ export default defineNuxtConfig({
       plugins: [vue()]
     },
     prerender: {
-      routes: [
-        '/'
-      ],
+      routes: ['/'],
       crawlLinks: true
-    }
-  },
-  auth: {
-    baseURL: `${process.env.NUXT_PUBLIC_SITE_URL}/api/auth`,
-    provider: {
-      type: 'authjs'
     }
   },
   eslint: {

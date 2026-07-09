@@ -13,12 +13,7 @@ const signInLoading = ref(false)
 
 async function signInWithGoogle() {
   signInLoading.value = true
-  try {
-    await signIn('google', { callbackUrl: '/dashboard?signInCallback=true' })
-  } catch (error) {
-    signInLoading.value = false
-    console.error('Error signing in with Google:', error)
-  }
+  signIn('google')
 }
 </script>
 

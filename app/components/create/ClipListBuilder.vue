@@ -81,7 +81,7 @@ async function addLink() {
   busy.value = true
 
   try {
-    const res = await $fetch<{
+    const res = await useApiFetch<{
       clipId: string
       platform: string
       durationSeconds: number | null
@@ -138,7 +138,7 @@ async function onFilePicked(e: Event) {
   try {
     const form = new FormData()
     form.append('file', file)
-    const res = await $fetch<{ clipId: string }>('/api/clips/upload', {
+    const res = await useApiFetch<{ clipId: string }>('/api/clips/upload', {
       method: 'POST',
       body: form
     })

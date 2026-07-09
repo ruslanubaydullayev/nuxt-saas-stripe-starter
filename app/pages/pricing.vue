@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const { data: authData } = useAuth()
+const { status: authStatus } = useAuth()
+const isLoggedIn = computed(() => authStatus.value === 'authenticated')
 const { data: page } = await useAsyncData('pricing', () => queryCollection('pricing').first())
 
 const title = page.value?.seo?.title || page.value?.title
 const description = page.value?.seo?.description || page.value?.description
-const toast = useToast()
 useSeoMeta({
   title,
   ogTitle: title,
@@ -17,26 +17,6 @@ const items = page.value?.subscriptions.frequencies.map(freq => ({
   label: freq.label,
   value: freq.value
 }))
-
-const generateSubscription = async (priceId: string | null) => {
-  if (!priceId) return
-  const result: { redirectUrl?: string } = await $fetch(
-    '/api/subscriptions/generate',
-    {
-      method: 'POST',
-      body: { priceId }
-    }
-  )
-  if (result.redirectUrl) {
-    navigateTo(result.redirectUrl, { external: true })
-  } else {
-    toast.add({
-      title: 'Error',
-      color: 'error',
-      description: 'An error occurred while processing your request.'
-    })
-  }
-}
 </script>
 
 <template>
@@ -85,7 +65,7 @@ const generateSubscription = async (priceId: string | null) => {
               :variant="plan.highlight ? 'solid' : 'outline'"
             />
             <UButton
-              v-else-if="!authData"
+              v-else-if="!isLoggedIn"
               label="Sign in"
               to="/login"
               color="primary"
@@ -93,20 +73,12 @@ const generateSubscription = async (priceId: string | null) => {
               :variant="plan.highlight ? 'solid' : 'outline'"
             />
             <UButton
-              v-else-if="authData && !authData.user?.stripeCustomerId && plan.stripeIds"
-              label="Buy plan"
-              color="primary"
-              block
-              :variant="plan.highlight ? 'solid' : 'outline'"
-              @click.prevent="generateSubscription(plan.stripeIds[selectedFrequency])"
-            />
-            <UButton
               v-else
-              label="Manage billing"
-              to="/dashboard/billing"
-              color="primary"
+              label="Coming soon"
+              color="neutral"
+              variant="outline"
               block
-              :variant="plan.highlight ? 'solid' : 'outline'"
+              disabled
             />
           </template>
         </UPricingPlan>
