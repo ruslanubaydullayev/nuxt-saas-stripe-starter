@@ -32,8 +32,8 @@ export function useAuth() {
   }
 
   function signIn(_provider = 'google', _opts?: { callbackUrl?: string }) {
-    // OAuth redirect — callback URL is configured on the backend (FRONTEND_URL).
-    window.location.href = apiUrl('/api/auth/signin/google')
+    // Same-origin proxy → backend → Google OAuth (never opens api.ytshort.site).
+    window.location.href = '/api/auth/signin/google'
   }
 
   async function signOut(opts?: { callbackUrl?: string }) {

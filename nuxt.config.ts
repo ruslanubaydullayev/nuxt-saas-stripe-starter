@@ -24,7 +24,12 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/dashboard/**': { ssr: false },
-    '/create': { ssr: false, robots: false }
+    '/create': { ssr: false, robots: false },
+    // Proxy all API traffic through the frontend domain so users never
+    // navigate directly to api.ytshort.site (avoids Safe Browsing warnings).
+    '/api/**': {
+      proxy: `${process.env.NUXT_PUBLIC_API_BASE || 'https://api.ytshort.site'}/api/**`
+    }
   },
   compatibilityDate: '2024-07-11',
   nitro: {
