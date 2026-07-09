@@ -41,10 +41,10 @@
 <script setup lang="ts">
 const secondaryNavigation = [
   {
-    name: 'Panel',
-    href: '/dashboard',
-    icon: 'i-heroicons-document',
-    current: true
+    name: 'Create',
+    href: '/create',
+    icon: 'i-heroicons-sparkles',
+    current: false
   },
   {
     name: 'Billing',

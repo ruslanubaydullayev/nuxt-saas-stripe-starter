@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div
     class="relative overflow-hidden rounded border border-dashed border-neutral-400 dark:border-neutral-500 opacity-75 px-4 flex items-center justify-center"

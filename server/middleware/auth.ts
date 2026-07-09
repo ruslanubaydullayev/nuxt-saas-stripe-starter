@@ -1,22 +1,25 @@
-import { getServerSession } from "#auth";
+import { getServerSession } from '#auth'
 
 export default defineEventHandler(async (event) => {
   const unprotectedPaths = [
-    "/api/auth",
-    "/api/webhooks",
-    "/api/_content",
-    "/api/_mdc",
-  ];
+    '/api/auth',
+    '/api/webhooks',
+    '/api/_content',
+    '/api/_mdc',
+    '/api/clips',
+    '/api/usage',
+    '/api/render'
+  ]
 
   // Check if the route is an API route and not in the list of unprotected paths
-  const isProtectedRoute =
-    event.path.startsWith("/api") &&
-    !unprotectedPaths.some((path) => event.path.startsWith(path));
+  const isProtectedRoute
+    = event.path.startsWith('/api')
+      && !unprotectedPaths.some(path => event.path.startsWith(path))
 
   if (isProtectedRoute) {
-    const session = await getServerSession(event);
+    const session = await getServerSession(event)
     if (!session) {
-      throw createError({ statusMessage: "Unauthenticated", statusCode: 403 });
+      throw createError({ statusMessage: 'Unauthenticated', statusCode: 403 })
     }
   }
-});
+})

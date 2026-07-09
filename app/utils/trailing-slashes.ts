@@ -1,4 +1,4 @@
-const TRAILING_SLASH_RE = /\/$|\/\?|\/#/;
+const TRAILING_SLASH_RE = /\/$|\/\?|\/#/
 
 /**
  * Remove trailing slash from the input string.
@@ -7,32 +7,32 @@ const TRAILING_SLASH_RE = /\/$|\/\?|\/#/;
  * @returns {string} - The input string without trailing slash.
  */
 export function withoutTrailingSlash(
-  input = "",
+  input = '',
   respectQueryAndFragment?: boolean
 ): string {
   if (!respectQueryAndFragment) {
-    return input.endsWith("/") ? input.slice(0, -1) : input || "/";
+    return input.endsWith('/') ? input.slice(0, -1) : input || '/'
   }
 
   if (!hasTrailingSlash(input, true)) {
-    return input || "/";
+    return input || '/'
   }
 
-  let path = input;
-  let fragment = "";
-  const fragmentIndex = input.indexOf("#");
+  let path = input
+  let fragment = ''
+  const fragmentIndex = input.indexOf('#')
 
   if (fragmentIndex >= 0) {
-    path = input.slice(0, fragmentIndex);
-    fragment = input.slice(fragmentIndex);
+    path = input.slice(0, fragmentIndex)
+    fragment = input.slice(fragmentIndex)
   }
 
-  const [basePath, ...queryParts] = path.split("?");
-  const cleanPath = basePath.endsWith("/") ? basePath.slice(0, -1) : basePath;
+  const [basePath, ...queryParts] = path.split('?')
+  const cleanPath = basePath.endsWith('/') ? basePath.slice(0, -1) : basePath
 
-  return `${cleanPath || "/"}${
-    queryParts.length > 0 ? `?${queryParts.join("?")}` : ""
-  }${fragment}`;
+  return `${cleanPath || '/'}${
+    queryParts.length > 0 ? `?${queryParts.join('?')}` : ''
+  }${fragment}`
 }
 
 /**
@@ -42,11 +42,11 @@ export function withoutTrailingSlash(
  * @returns {boolean} - True if the input string has a trailing slash, otherwise false.
  */
 export function hasTrailingSlash(
-  input = "",
+  input = '',
   respectQueryAndFragment?: boolean
 ): boolean {
   if (!respectQueryAndFragment) {
-    return input.endsWith("/");
+    return input.endsWith('/')
   }
-  return TRAILING_SLASH_RE.test(input);
+  return TRAILING_SLASH_RE.test(input)
 }

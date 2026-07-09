@@ -1,22 +1,14 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
-const route = useRoute()
 const { data: authData, signOut } = useAuth()
 
 const items = computed(() => [{
-  label: 'Docs',
-  to: '/docs',
-  active: route.path.startsWith('/docs')
+  label: 'Create',
+  to: '/create'
 }, {
   label: 'Pricing',
   to: '/pricing'
-}, {
-  label: 'Blog',
-  to: '/blog'
-}, {
-  label: 'Changelog',
-  to: '/changelog'
 }])
 
 const dropdownMenuItems = [
@@ -38,8 +30,12 @@ const dropdownMenuItems = [
 <template>
   <UHeader>
     <template #left>
-      <NuxtLink to="/">
-        <AppLogo class="w-auto h-6 shrink-0" />
+      <NuxtLink
+        to="/"
+        class="flex items-center gap-2 font-bold tracking-tight"
+      >
+        <span class="flex size-8 items-center justify-center rounded-lg bg-primary text-sm font-black text-white">RS</span>
+        <span class="hidden text-lg sm:inline">Ranking Shorts</span>
       </NuxtLink>
     </template>
 
@@ -49,6 +45,13 @@ const dropdownMenuItems = [
     />
 
     <template #right>
+      <UButton
+        label="Create"
+        icon="i-lucide-sparkles"
+        to="/create"
+        class="hidden lg:inline-flex"
+      />
+
       <UColorModeButton />
 
       <UButton

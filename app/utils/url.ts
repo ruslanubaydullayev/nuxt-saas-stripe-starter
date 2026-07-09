@@ -1,4 +1,4 @@
-const publicConfig = useRuntimeConfig().public;
+const publicConfig = useRuntimeConfig().public
 export function absoluteUrl(path: string) {
-  return `${publicConfig.SiteUrl}${path}`;
+  return `${publicConfig.SiteUrl}${path}`
 }

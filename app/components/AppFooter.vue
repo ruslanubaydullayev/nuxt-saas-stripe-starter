@@ -1,40 +1,12 @@
 <script setup lang="ts">
 const columns = [{
-  label: 'Resources',
+  label: 'Product',
   children: [{
-    label: 'Help center'
-  }, {
-    label: 'Docs',
-    to: '/docs'
-  }, {
-    label: 'Roadmap'
-  }, {
-    label: 'Changelog',
-    to: '/changelog'
-  }]
-}, {
-  label: 'Features',
-  children: [{
-    label: 'Affiliates'
-  }, {
-    label: 'Portal'
-  }, {
-    label: 'Jobs'
-  }, {
-    label: 'Sponsors'
-  }]
-}, {
-  label: 'Company',
-  children: [{
-    label: 'About'
+    label: 'Create',
+    to: '/create'
   }, {
     label: 'Pricing',
     to: '/pricing'
-  }, {
-    label: 'Careers'
-  }, {
-    label: 'Blog',
-    to: '/blog'
   }]
 }]
 
@@ -94,7 +66,7 @@ function onSubmit() {
 
     <template #left>
       <p class="text-muted text-sm">
-        Built with Nuxt UI • © {{ new Date().getFullYear() }}
+        Ranking Shorts · © {{ new Date().getFullYear() }}
       </p>
     </template>
 

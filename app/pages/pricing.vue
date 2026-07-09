@@ -12,8 +12,6 @@ useSeoMeta({
   ogDescription: description
 })
 
-defineOgImageComponent('Saas')
-
 const selectedFrequency = ref<'monthly' | 'yearly'>('monthly')
 const items = page.value?.subscriptions.frequencies.map(freq => ({
   label: freq.label,
@@ -81,7 +79,15 @@ const generateSubscription = async (priceId: string | null) => {
         >
           <template #button>
             <UButton
-              v-if="!authData"
+              v-if="plan.price[selectedFrequency] === 0"
+              label="Start creating"
+              to="/create"
+              color="primary"
+              block
+              :variant="plan.highlight ? 'solid' : 'outline'"
+            />
+            <UButton
+              v-else-if="!authData"
               label="Sign in"
               to="/login"
               color="primary"
@@ -98,7 +104,7 @@ const generateSubscription = async (priceId: string | null) => {
             />
             <UButton
               v-else
-              label="Dashboard"
+              label="Manage billing"
               to="/dashboard/billing"
               color="primary"
               block
@@ -108,10 +114,6 @@ const generateSubscription = async (priceId: string | null) => {
         </UPricingPlan>
       </UPricingPlans>
     </UContainer>
-
-    <UPageSection>
-      <PoweredBy />
-    </UPageSection>
 
     <UPageSection
       :title="page.faq.title"

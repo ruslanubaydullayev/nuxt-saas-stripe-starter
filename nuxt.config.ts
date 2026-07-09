@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     '@nuxt/content',
-    'nuxt-og-image',
     '@sidebase/nuxt-auth',
     '@pinia/nuxt',
     '@vueuse/nuxt'
@@ -23,12 +22,16 @@ export default defineNuxtConfig({
     StripeWebhookSecret: '',
     ResendApiKey: '',
     public: {
-      SiteUrl: ''
+      SiteUrl: '',
+      maxRankingItems: Number(process.env.MAX_RANKING_ITEMS || 10),
+      maxUploadMb: Number(process.env.MAX_UPLOAD_MB || 100),
+      maxClipDurationSeconds: Number(process.env.MAX_CLIP_DURATION_SECONDS || 60),
+      planPriceUsd: Number(process.env.PLAN_PRICE_USD || 9)
     }
   },
   routeRules: {
     '/dashboard/**': { ssr: false },
-    '/docs': { redirect: '/docs/getting-started', prerender: false }
+    '/create': { ssr: false, robots: false }
   },
   compatibilityDate: '2024-07-11',
   nitro: {

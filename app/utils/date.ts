@@ -4,12 +4,12 @@
  * @returns {string} - The formatted date string.
  */
 export function formatDate(input: string | number | Date): string {
-  const date = new Date(input);
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+  const date = new Date(input)
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  })
 }
 
 /**
@@ -18,12 +18,12 @@ export function formatDate(input: string | number | Date): string {
  * @returns {string} - The formatted date and time string.
  */
 export function formatDateTime(input: string | number | Date): string {
-  const date = new Date(input);
-  return date.toLocaleString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  });
+  const date = new Date(input)
+  return date.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric'
+  })
 }
