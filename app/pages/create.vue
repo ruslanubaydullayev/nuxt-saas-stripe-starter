@@ -85,10 +85,8 @@ function startPolling(jobId: string) {
       )
       if (s.status === 'done') {
         stopPolling()
-        const { url } = await useApiFetch<{ url: string }>(
-          `/api/render/${jobId}/download`
-        )
-        store.resultUrl = url
+        // Always use same-origin proxy URL; backend SITE_URL may be misconfigured.
+        store.resultUrl = `/api/render/${jobId}/file`
         phase.value = 'done'
       } else if (s.status === 'failed') {
         stopPolling()
