@@ -55,7 +55,7 @@ async function generate() {
     }))
   }
 
-  store.setStep(4)
+  store.setStep(3)
   phase.value = 'processing'
   renderError.value = null
 
@@ -70,9 +70,26 @@ async function generate() {
     const e = err as { statusCode?: number, statusMessage?: string }
     phase.value = 'failed'
     renderError.value = e.statusMessage ?? 'Couldn’t start the render.'
-    store.setStep(3)
+    store.setStep(2)
     phase.value = 'idle'
     toast.add({ title: renderError.value, color: 'error' })
+  }
+}
+
+async function downloadVideo() {
+  if (!store.resultUrl) return
+  try {
+    const blob = await $fetch<Blob>(store.resultUrl, { responseType: 'blob' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'ranking-short.mp4'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  } catch {
+    toast.add({ title: 'Download failed.', color: 'error' })
   }
 }
 
@@ -172,48 +189,24 @@ onBeforeUnmount(stopPolling)
             {{ store.title.length }}/40
           </p>
         </UCard>
-        <div class="mt-6 flex justify-between">
-          <UButton
-            label="Back"
-            color="neutral"
-            variant="outline"
-            @click="store.setStep(1)"
-          />
-          <UButton
-            label="Next: review"
-            :disabled="!store.title.trim()"
-            @click="store.setStep(3)"
-          />
-        </div>
-      </div>
 
-      <div
-        v-else-if="store.step === 3"
-        key="3"
-      >
-        <div class="grid gap-6 sm:grid-cols-2">
-          <UCard>
-            <h3 class="font-semibold text-highlighted">
-              {{ store.title }}
-            </h3>
-            <ol class="mt-4 space-y-2">
-              <li
-                v-for="(item, i) in store.readyItems"
-                :key="item.uid"
-                class="flex items-center gap-3 text-sm"
-              >
-                <span
-                  class="flex size-7 items-center justify-center rounded-lg border-2 border-primary font-black"
-                >{{ i + 1 }}</span>
-                <span class="truncate">{{ item.label }}</span>
-              </li>
-            </ol>
-          </UCard>
-          <CreateClipPreview
-            :title="store.title"
-            :items="store.readyItems"
-          />
-        </div>
+        <UCard class="mt-4">
+          <h3 class="mb-3 font-semibold text-highlighted">
+            Your clips
+          </h3>
+          <ol class="space-y-2">
+            <li
+              v-for="(item, i) in store.readyItems"
+              :key="item.uid"
+              class="flex items-center gap-3 text-sm"
+            >
+              <span
+                class="flex size-7 items-center justify-center rounded-lg border-2 border-primary font-black"
+              >{{ i + 1 }}</span>
+              <span class="truncate">{{ item.label }}</span>
+            </li>
+          </ol>
+        </UCard>
 
         <p class="mt-4 text-center text-xs text-muted">
           By generating, you confirm you own or have the rights to use these clips.
@@ -223,7 +216,7 @@ onBeforeUnmount(stopPolling)
             label="Back"
             color="neutral"
             variant="outline"
-            @click="store.setStep(2)"
+            @click="store.setStep(1)"
           />
           <UButton
             label="Generate video"
@@ -236,7 +229,7 @@ onBeforeUnmount(stopPolling)
 
       <div
         v-else
-        key="4"
+        key="3"
       >
         <UCard
           v-if="phase === 'processing'"
@@ -273,10 +266,7 @@ onBeforeUnmount(stopPolling)
               v-if="store.resultUrl"
               label="Download .mp4"
               icon="i-lucide-download"
-              :href="store.resultUrl"
-              target="_blank"
-              download="ranking-short.mp4"
-              tag="a"
+              @click="downloadVideo"
             />
             <UButton
               label="Create another"
@@ -317,7 +307,7 @@ onBeforeUnmount(stopPolling)
           <div class="mt-6 flex justify-center gap-3">
             <UButton
               label="Try again"
-              @click="store.setStep(3)"
+              @click="store.setStep(2)"
             />
             <UButton
               label="Start over"

@@ -22,14 +22,14 @@ const uid = () => `item-${Date.now()}-${counter++}`
 
 export const useBuilderStore = defineStore('builder', {
   state: () => ({
-    step: 1 as 1 | 2 | 3 | 4,
+    step: 1 as 1 | 2 | 3,
     title: '',
     items: [] as RankingItem[],
     jobId: null as string | null,
     resultUrl: null as string | null
   }),
   getters: {
-    totalSteps: () => 4,
+    totalSteps: () => 3,
     readyItems: state => state.items.filter(i => i.status === 'ready'),
     canProceedFromList(): boolean {
       return (
@@ -62,7 +62,7 @@ export const useBuilderStore = defineStore('builder', {
       if (item?.previewUrl) URL.revokeObjectURL(item.previewUrl)
       this.items = this.items.filter(i => i.uid !== uidValue)
     },
-    setStep(step: 1 | 2 | 3 | 4) {
+    setStep(step: 1 | 2 | 3) {
       this.step = step
     },
     reset() {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{ step: number, total: number }>()
 
-const labels = ['Clips', 'Title', 'Review', 'Result']
+const labels = ['Clips', 'Title', 'Result']
 const pct = computed(() => ((props.step - 1) / (props.total - 1)) * 100)
 </script>
 
