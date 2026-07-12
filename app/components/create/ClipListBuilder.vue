@@ -138,14 +138,16 @@ async function onFilePicked(e: Event) {
   try {
     const form = new FormData()
     form.append('file', file)
-    const res = await useApiFetch<{ clipId: string }>('/api/clips/upload', {
+    // Upload directly to API — bypasses Vercel proxy body limits that cause 500 errors.
+    const res = await $fetch<{ clipId: string }>(`${useApiBase()}/api/clips/upload`, {
       method: 'POST',
-      body: form
+      body: form,
+      credentials: 'include'
     })
     store.updateItem(item.uid, { clipId: res.clipId, status: 'ready' })
   } catch (err) {
-    const message
-      = (err as { statusMessage?: string })?.statusMessage ?? 'Upload failed.'
+    const e = err as { data?: { detail?: string }, statusMessage?: string }
+    const message = e?.data?.detail ?? e?.statusMessage ?? 'Upload failed.'
     store.updateItem(item.uid, { status: 'error', error: message })
     toast.add({ title: message, color: 'error' })
   } finally {

@@ -14,7 +14,7 @@ export async function sendWelcomeEmail({
   to,
   userName,
   userEmail,
-  appName = 'Ranking Shorts',
+  appName = 'YTShort',
   baseUrl = 'http://localhost:3000'
 }: SendWelcomeEmailParams) {
   try {

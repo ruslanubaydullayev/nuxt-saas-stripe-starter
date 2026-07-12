@@ -32,8 +32,8 @@ const dropdownMenuItems = [
         to="/"
         class="flex items-center gap-2 font-bold tracking-tight"
       >
-        <span class="flex size-8 items-center justify-center rounded-lg bg-primary text-sm font-black text-white">RS</span>
-        <span class="hidden text-lg sm:inline">Ranking Shorts</span>
+        <span class="flex size-8 items-center justify-center rounded-lg bg-primary text-sm font-black text-white">YT</span>
+        <span class="hidden text-lg sm:inline">YTShort</span>
       </NuxtLink>
     </template>
 
